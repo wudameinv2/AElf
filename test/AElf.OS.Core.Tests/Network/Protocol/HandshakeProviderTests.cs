@@ -81,7 +81,7 @@ namespace AElf.OS.Network.Protocol
             validationResult = await _handshakeProvider.ValidateHandshakeAsync(handshake);
             validationResult.ShouldBe(HandshakeValidationResult.InvalidSignature);
 
-            var localHandshake = await _handshakeProvider.GetHandshakeAsync();
+            var localHandshake = await _handshakeProvider.GetHandshakeAsync(true);
             validationResult = await _handshakeProvider.ValidateHandshakeAsync(localHandshake);
             validationResult.ShouldBe(HandshakeValidationResult.SelfConnection);
         }

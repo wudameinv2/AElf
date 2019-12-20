@@ -117,7 +117,7 @@ namespace AElf.OS.Network
                     .Returns<string>(async (s) =>
                     {
                         var handshakeProvider = context.Services.GetServiceLazy<IHandshakeProvider>().Value;
-                        var handshake = await handshakeProvider.GetHandshakeAsync();
+                        var handshake = await handshakeProvider.GetHandshakeAsync(true);
                         handshake.HandshakeData.Time = null;
                         var handshakeReply = new HandshakeReply{Handshake = handshake};
                         
