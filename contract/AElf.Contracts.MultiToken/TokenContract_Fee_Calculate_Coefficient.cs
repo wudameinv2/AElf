@@ -24,6 +24,22 @@ namespace AElf.Contracts.MultiToken
             InitialParameters();
             Context.Fire(new NoticeUpdateCalculateFeeAlgorithm
             {
+                AllCoefficient = State.CalculateCoefficientOfContract[FeeTypeEnum.Cpu]
+            });
+            Context.Fire(new NoticeUpdateCalculateFeeAlgorithm
+            {
+                AllCoefficient = State.CalculateCoefficientOfContract[FeeTypeEnum.Sto]
+            });
+            Context.Fire(new NoticeUpdateCalculateFeeAlgorithm
+            {
+                AllCoefficient = State.CalculateCoefficientOfContract[FeeTypeEnum.Ram]
+            });
+            Context.Fire(new NoticeUpdateCalculateFeeAlgorithm
+            {
+                AllCoefficient = State.CalculateCoefficientOfContract[FeeTypeEnum.Net]
+            });
+            Context.Fire(new NoticeUpdateCalculateFeeAlgorithm
+            {
                 AllCoefficient = State.CalculateCoefficientOfSender.Value
             });
             return new Empty();

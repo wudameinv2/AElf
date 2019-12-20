@@ -18,6 +18,8 @@ service CrossChainContract {
     }
     rpc ChangOwnerAddress(aelf.Address) returns (google.protobuf.Empty) {
     }
+    rpc InitCrossChainIndexingProposal(google.protobuf.Empty) returns (google.protobuf.Empty){
+    }
 
     // Views
     rpc VerifyTransaction (VerifyTransactionInput) returns (google.protobuf.BoolValue) {

@@ -31,6 +31,18 @@ namespace AElf.Contracts.CrossChain
             return new Empty();
         }
 
+        public override Empty InitCrossChainIndexingProposal(Empty input)
+        {
+            if (State.CrossChainIndexingProposal.Value == null)
+            {
+                State.CrossChainIndexingProposal.Value = new CrossChainIndexingProposal
+                {
+                    Status = CrossChainIndexingProposalStatus.NonProposed
+                };
+            }
+            return new Empty();
+        }
+
         #region Side chain lifetime actions
 
         /// <summary>
