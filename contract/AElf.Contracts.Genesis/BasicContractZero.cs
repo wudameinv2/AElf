@@ -380,6 +380,13 @@ namespace AElf.Contracts.Genesis
             return new Empty();
         }
 
+        public override Empty SetContractProposerAuthorityRequired(BoolValue input)
+        {
+            Assert(CheckAddressIsParliamentMember(Context.Sender),"No permission.");
+            State.ContractProposerAuthorityRequired.Value = input.Value;
+            return new Empty();
+        }
+
         #endregion Actions
     }
 }

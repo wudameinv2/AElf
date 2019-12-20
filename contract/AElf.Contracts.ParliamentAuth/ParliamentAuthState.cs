@@ -12,6 +12,7 @@ namespace AElf.Contracts.ParliamentAuth
 
         public BoolState Initialized { get; set; }
         
+        public SingletonState<Address> GenesisOwnerAddress { get; set; }
         public SingletonState<Address> DefaultOrganizationAddress { get; set; }
         
         public SingletonState<bool> ProposerAuthorityRequired { get; set; }

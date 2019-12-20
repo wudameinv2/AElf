@@ -12,6 +12,22 @@ namespace AElf.Contracts.MultiToken
             InitialParameters();
             return new Empty();
         }
+        
+        public override Empty InitializeCoefficientForUpdate(Empty empty)
+        {
+            if (State.ParliamentAuthContract.Value == null)
+            {
+                State.ParliamentAuthContract.Value =
+                    Context.GetContractAddressByName(SmartContractConstants.ParliamentAuthContractSystemName);
+            }
+            Assert(State.ParliamentAuthContract.ValidateAddressIsParliamentMember.Call(Context.Sender).Value,"No permission");
+            InitialParameters();
+            Context.Fire(new NoticeUpdateCalculateFeeAlgorithm
+            {
+                AllCoefficient = State.CalculateCoefficientOfSender.Value
+            });
+            return new Empty();
+        }
 
         public override Empty UpdateCoefficientFromContract(CoefficientFromContract coefficientInput)
         {

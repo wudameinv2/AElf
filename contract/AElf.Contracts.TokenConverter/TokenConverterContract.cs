@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using AElf.Contracts.MultiToken;
@@ -60,6 +61,59 @@ namespace AElf.Contracts.TokenConverter
             return new Empty();
         }
 
+        public override Empty ReInitializeConnectors(Empty input)
+        {
+            if (State.ParliamentAuthContract.Value == null)
+            {
+                State.ParliamentAuthContract.Value =
+                    Context.GetContractAddressByName(SmartContractConstants.ParliamentAuthContractSystemName);
+            }
+            Assert(State.ParliamentAuthContract.ValidateAddressIsParliamentMember.Call(Context.Sender).Value, "No permission");
+            var connectors = new List<Connector>();
+            foreach (var resourceTokenSymbol in Context.Variables.ResourceTokenSymbolNameList)
+            {
+                var resourceTokenConnector = new Connector
+                {
+                    Symbol = resourceTokenSymbol,
+                    IsPurchaseEnabled = true,
+                    IsVirtualBalanceEnabled = true,
+                    Weight = "0.005",
+                    VirtualBalance = 100_000,
+                    RelatedSymbol = NtTokenPrefix.Append(resourceTokenSymbol),
+                    IsDepositAccount = false
+                };
+                var nativeTokenConnector = new Connector
+                {
+                    Symbol = NtTokenPrefix.Append(resourceTokenSymbol),
+                    IsPurchaseEnabled = true,
+                    IsVirtualBalanceEnabled = true,
+                    Weight = "0.005",
+                    VirtualBalance = 10_000_000_00000000,
+                    RelatedSymbol = resourceTokenSymbol,
+                    IsDepositAccount = true
+                };
+                connectors.Add(resourceTokenConnector);
+                connectors.Add(nativeTokenConnector);
+            }
+            var count = State.ConnectorCount.Value;
+            foreach (var connector in connectors)
+            {
+                if(connector.IsDepositAccount)
+                    AssertValidConnectorWeight(connector);
+                else
+                    AssertValidConnectorAndNormalizeWeight(connector);
+                if (State.Connectors[connector.Symbol] == null)
+                {
+                    State.ConnectorSymbols[count + 1] = connector.Symbol;
+                    count = count.Add(1);
+                }
+                State.Connectors[connector.Symbol] = connector;
+                count = count.Add(1);
+            }
+            State.ConnectorCount.Value = count;
+            return new Empty();
+        }
+        
         public override Empty UpdateConnector(Connector input)
         {
             AssertPerformedByManager();

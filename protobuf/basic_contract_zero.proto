@@ -12,6 +12,9 @@ service BasicContractZero {
     option (aelf.base) = "acs0.proto";
     option (aelf.base) = "acs1.proto";
     
+    rpc SetContractProposerAuthorityRequired(google.protobuf.BoolValue) returns (google.protobuf.Empty){
+    }
+    
     rpc GetDeployedContractAddressList (google.protobuf.Empty) returns (AddressList) {
         option (aelf.is_view) = true;
     }

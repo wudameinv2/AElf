@@ -41,6 +41,39 @@ namespace AElf.Contracts.ParliamentAuth
             };
         }
 
+        public override Empty SetDefaultOrganizationAddress(Empty input)
+        {
+            if (State.DefaultOrganizationAddress.Value == null)
+            {
+                State.DefaultOrganizationAddress.Value = State.GenesisOwnerAddress.Value;
+            }
+            return new Empty();
+        }
+
+        public override ProposerWhiteList SetProposerWhiteList(Empty input)
+        {
+            if (State.ProposerWhiteList.Value == null)
+            {
+                var proposerWhiteList = new ProposerWhiteList();
+                proposerWhiteList.Proposers.AddRange(GetOrganization(State.GenesisOwnerAddress.Value).ProposerWhiteList);
+                State.ProposerWhiteList.Value = proposerWhiteList;
+            }
+            return State.ProposerWhiteList.Value;
+        }
+
+        public override Empty SetProposerAuthorityRequired(BoolValue input)
+        {
+            AssertSenderIsParliamentMember();
+            State.ProposerAuthorityRequired.Value = input.Value;
+            return new Empty();
+        }
+
+        public override Address GetGenesisOwnerAddress(Empty input)
+        {
+            Assert(State.Initialized.Value, "Not initialized.");
+            return State.GenesisOwnerAddress.Value;
+        }
+
         public override Address GetDefaultOrganizationAddress(Empty input)
         {
             Assert(State.Initialized.Value, "Not initialized.");

@@ -28,7 +28,9 @@ service TokenConverterContract {
     }
     rpc AddPairConnectors(PairConnector) returns (google.protobuf.Empty){
     }
-    rpc EnableConnector(ToBeConnectedTokenInfo) returns (google.protobuf.Empty){
+    rpc EnableConnector(ToBeConnectedTokenInfo) returns (google.protobuf.Empty) {
+    }
+    rpc ReInitializeConnectors(google.protobuf.Empty) returns (google.protobuf.Empty){
     }
     // Views
     rpc GetTokenContractAddress (google.protobuf.Empty) returns (aelf.Address) {
