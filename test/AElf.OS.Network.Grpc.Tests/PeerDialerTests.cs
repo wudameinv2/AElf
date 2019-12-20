@@ -41,7 +41,7 @@ namespace AElf.OS.Network
         public async Task DialBackPeer_Test()
         {
             AElfPeerEndpointHelper.TryParse("127.0.0.1:2000", out var endpoint);
-            var handshake = await _handshakeProvider.GetHandshakeAsync();
+            var handshake = await _handshakeProvider.GetHandshakeAsync(true);
             
             var grpcPeer = await _peerDialer.DialBackPeerAsync(endpoint, handshake);
             
