@@ -141,6 +141,7 @@ namespace AElf.Kernel.TransactionPool.Application
                     {Value = CalculateAlgorithmContext.CalculateFeeTypeEnum});
             }
             var calWayDic = new Dictionary<int, ICalculateWay>();
+            if (parameters == null) return calWayDic;
             foreach (var func in parameters.Coefficients)
             {
                 ICalculateWay newCalculateWay = null;
