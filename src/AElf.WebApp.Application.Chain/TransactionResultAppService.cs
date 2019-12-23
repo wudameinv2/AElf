@@ -82,12 +82,7 @@ namespace AElf.WebApp.Application.Chain
             if (methodDescriptor != null)
             {
                 var parameters = methodDescriptor.InputType.Parser.ParseFrom(transaction.Params);
-                if (!IsValidMessage(parameters))
-                {
-                    throw new UserFriendlyException(Error.Message[Error.InvalidParams], Error.InvalidParams.ToString());
-                }
-
-                output.Transaction.Params = JsonFormatter.ToDiagnosticString(parameters);
+                if (IsValidMessage(parameters)) output.Transaction.Params = JsonFormatter.ToDiagnosticString(parameters);
             }
 
             if (transactionResult.Status == TransactionResultStatus.Pending)
@@ -275,12 +270,8 @@ namespace AElf.WebApp.Application.Chain
             if (methodDescriptor != null)
             {
                 var parameters = methodDescriptor.InputType.Parser.ParseFrom(transaction.Params);
-                if (!IsValidMessage(parameters))
-                {
-                    throw new UserFriendlyException(Error.Message[Error.InvalidParams], Error.InvalidParams.ToString());
-                }
-
-                transactionResultDto.Transaction.Params = JsonFormatter.ToDiagnosticString(parameters);
+                if (IsValidMessage(parameters))
+                    transactionResultDto.Transaction.Params = JsonFormatter.ToDiagnosticString(parameters);
             }
 
             transactionResultDto.Status = transactionResult.Status.ToString();
