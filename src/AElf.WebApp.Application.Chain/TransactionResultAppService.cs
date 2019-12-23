@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Google.Protobuf.Reflection;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
 
@@ -81,8 +82,15 @@ namespace AElf.WebApp.Application.Chain
 
             if (methodDescriptor != null)
             {
-                var parameters = methodDescriptor.InputType.Parser.ParseFrom(transaction.Params);
-                if (IsValidMessage(parameters)) output.Transaction.Params = JsonFormatter.ToDiagnosticString(parameters);
+                try
+                {
+                    var parameters = methodDescriptor.InputType.Parser.ParseFrom(transaction.Params);
+                    if (IsValidMessage(parameters)) output.Transaction.Params = JsonFormatter.ToDiagnosticString(parameters);
+                }
+                catch
+                {
+                    //Do nothing
+                }
             }
 
             if (transactionResult.Status == TransactionResultStatus.Pending)
@@ -269,9 +277,16 @@ namespace AElf.WebApp.Application.Chain
 
             if (methodDescriptor != null)
             {
-                var parameters = methodDescriptor.InputType.Parser.ParseFrom(transaction.Params);
-                if (IsValidMessage(parameters))
-                    transactionResultDto.Transaction.Params = JsonFormatter.ToDiagnosticString(parameters);
+                try
+                {
+                    var parameters = methodDescriptor.InputType.Parser.ParseFrom(transaction.Params);
+                    if (IsValidMessage(parameters))
+                        transactionResultDto.Transaction.Params = JsonFormatter.ToDiagnosticString(parameters);
+                }
+                catch
+                {
+                    //Do nothing
+                }
             }
 
             transactionResultDto.Status = transactionResult.Status.ToString();
