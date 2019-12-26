@@ -97,8 +97,11 @@ namespace AElf.WebApp.Application.Chain
             {
                 return output;
             }
-            var block = await _blockchainService.GetBlockAtHeightAsync(transactionResult.BlockNumber);
-            output.BlockHash = block?.GetHash().ToHex();
+            if (transactionResult.BlockNumber != 0)
+            {
+                var block = await _blockchainService.GetBlockAtHeightAsync(transactionResult.BlockNumber);
+                output.BlockHash = block.GetHash().ToHex();
+            }
 
             if (transactionResult.Status == TransactionResultStatus.Mined)
             {
