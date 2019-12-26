@@ -98,7 +98,7 @@ namespace AElf.WebApp.Application.Chain
                 return output;
             }
             var block = await _blockchainService.GetBlockAtHeightAsync(transactionResult.BlockNumber);
-            output.BlockHash = block.GetHash().ToHex();
+            output.BlockHash = block?.GetHash().ToHex();
 
             if (transactionResult.Status == TransactionResultStatus.Mined)
             {
@@ -165,6 +165,7 @@ namespace AElf.WebApp.Application.Chain
                 foreach (var transactionId in transactionIds)
                 {
                     var transactionResultDto = await GetTransactionResultDto(transactionId, realBlockHash, block.GetHash());
+                    transactionResultDto.BlockNumber = block.Height;
                     output.Add(transactionResultDto);
                 }
             }
