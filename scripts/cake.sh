@@ -8,6 +8,8 @@ CAKE_VERSION='0.35.0'
 dotnet tool install --global cake.tool --version $CAKE_VERSION
 export PATH="$PATH:$HOME/.dotnet/tools"
 
+dotnet tool restore
+
 # Start Cake
 CAKE_ARGS="$SCRIPT -verbosity=verbose"
 
