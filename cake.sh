@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SCRIPT='../build.cake'
+SCRIPT='./build.cake'
 CAKE_VERSION='0.35.0'
 
 
