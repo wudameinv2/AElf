@@ -35,16 +35,7 @@ jobs:
       version: '3.1.100'
   - script: bash scripts/install_protobuf.sh
   - script: bash scripts/download_binary.sh
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: 'build'
-      projects: 'AElf.sln'
-      arguments: '/p:NoBuild=false --configuration Debug'
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: test
-      projects: 'test/*Tests/*.csproj'
-      arguments: '--configuration Debug'
+  - script: ./scripts/cake.sh -target=test
 # All tasks on macOS
 - job: build_all_darwin
   displayName: Build all tasks (macOS)
@@ -56,14 +47,4 @@ jobs:
       version: '3.1.100' 
   - script: bash scripts/install_protobuf.sh
   - script: bash scripts/download_binary.sh
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: 'build'
-      projects: 'AElf.sln'
-      arguments: '/p:NoBuild=false --configuration Debug'
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: test
-      projects: 'test/*Tests/*.csproj'
-      arguments: '--configuration Debug'
-      
+  - script: ./scripts/build-cake.sh
