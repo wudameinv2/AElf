@@ -11,19 +11,11 @@ jobs:
       version: '3.1.100'
   - script: choco install protoc --version 3.6.0 -y
   - script: choco install unzip
+  - script: dotnet tool install --global cake.tool --version 0.35.0
   - task: BatchScript@1
     inputs:
       filename: 'scripts/download_binary.bat'
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: 'build'
-      projects: 'AElf.sln'
-      arguments: '/p:NoBuild=false --configuration Debug'
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: test
-      projects: 'test/*Tests/*.csproj'
-      arguments: '--configuration Debug'
+  - script: ./build.ps1
 # All tasks on Linux
 - job: build_all_linux
   displayName: Build all tasks (Linux)
