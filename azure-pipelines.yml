@@ -12,7 +12,8 @@ jobs:
   - script: choco install protoc --version 3.6.0 -y
   - script: choco install unzip
   - script: dotnet tool install --global cake.tool --version 0.35.0
-  - script: powershell build.ps1
+  - script: Set-ExecutionPolicy Unrestricted
+  - script: PowerShell.exe -file build.ps1
 # All tasks on Linux
 - job: build_all_linux
   displayName: Build all tasks (Linux)
