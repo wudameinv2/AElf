@@ -73,7 +73,7 @@ Task("pack")
     .Does(() =>
 {
     var projectFilePaths = srcProjects.Select(_=>_.FullPath).ToList();
-    projectFilePaths = projectFilePaths.Concat(contractProjects.Select(_=>_.FullPath).ToList());
+#    projectFilePaths = projectFilePaths.Concat(contractProjects.Select(_=>_.FullPath).ToList());
     nugetTool.Pack(projectFilePaths, distPath);
 });
 
