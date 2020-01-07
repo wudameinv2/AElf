@@ -53,9 +53,10 @@ Task("test")
     .Does(() =>
 {
     var testSetting = new DotNetCoreTestSettings{
-        NoRestore = false,
-        NoBuild = false
+        NoRestore = true,
+        NoBuild = true
     };
+    var testProjects = GetFiles("./test/*.Tests/*.csproj");
 
     foreach(var testProject in testProjects)
     {
