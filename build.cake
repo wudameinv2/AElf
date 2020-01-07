@@ -6,12 +6,13 @@ var target = Argument("target", "default");
 
 var rootPath     = "./";
 var srcPath      = rootPath + "src/";
-var testPath     = rootPath + "contract/";
+var contractPath = rootPath + "contract/";
+var testPath     = rootPath + "test/";
 var distPath     = rootPath + "aelf-node/";
 
 var solution     = rootPath + "AElf.sln";
 var srcProjects  = GetFiles(srcPath + "**/*.csproj");
-var testProjects = GetFiles(testPath + "**/*.csproj");
+var contractProjects  = GetFiles(contractPath + "**/*.csproj");
 
 var nugetTool = NuGetTool.FromCakeContext(Context);
 
@@ -22,6 +23,8 @@ Task("clean")
     DeleteFiles(distPath + "*.nupkg");
     CleanDirectories(srcPath + "**/bin");
     CleanDirectories(srcPath + "**/obj");
+    CleanDirectories(contractPath + "**/bin");
+    CleanDirectories(contractPath + "**/obj");
     CleanDirectories(testPath + "**/bin");
     CleanDirectories(testPath + "**/obj");
 });
@@ -70,7 +73,7 @@ Task("pack")
     .Does(() =>
 {
     var projectFilePaths = srcProjects.Select(_=>_.FullPath).ToList();
-
+    projectFilePaths = projectFilePaths.Concat(contractProjects.Select(_=>_.FullPath).ToList());
     nugetTool.Pack(projectFilePaths, distPath);
 });
 
