@@ -3,7 +3,6 @@
 #load nuget.tool.cake
 
 var target = Argument("target", "default");
-
 var rootPath     = "./";
 var srcPath      = rootPath + "src/";
 var contractPath = rootPath + "contract/";
@@ -73,7 +72,6 @@ Task("pack")
     .Does(() =>
 {
     var projectFilePaths = srcProjects.Select(_=>_.FullPath).ToList();
-#    projectFilePaths = projectFilePaths.Concat(contractProjects.Select(_=>_.FullPath).ToList());
     nugetTool.Pack(projectFilePaths, distPath);
 });
 
