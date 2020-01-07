@@ -46,23 +46,26 @@ Task("build")
     DotNetCoreBuild(solution, buildSetting);
 });
 
-
 Task("test")
     .Description("运行测试")
     .IsDependentOn("build")
     .Does(() =>
-{
-    var testSetting = new DotNetCoreTestSettings{
-        NoRestore = true,
-        NoBuild = true
-    };
-
-    foreach(var testProject in testProjects)
     {
-        DotNetCoreTest(testProject.FullPath, testSetting);
-    }
+        var projects = GetFiles("./Tests/**/*.csproj");
+        foreach(var project in projects)
+        {
+            DotNetCoreTest(
+                project.GetDirectory().FullPath,
+                new DotNetCoreTestSettings()
+                {
+                    ArgumentCustomization = args => args
+                        .Append("-xml")
+                        .Append(artifactsDirectory.Path.CombineWithFilePath(project.GetFilenameWithoutExtension()).FullPath + ".xml"),
+                    Configuration = configuration,
+                    NoBuild = true
+                });
+        }
 });
-
 Task("pack")
     .Description("nuget打包")
     .IsDependentOn("test")
